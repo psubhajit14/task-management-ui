@@ -1,0 +1,33 @@
+#root {
+  position: absolute;
+}
+
+.mantine-Anchor-root {
+  color: var(--mantine-color-bright);
+}
+
+.mantine-TextInput-label,
+.mantine-PasswordInput-label {
+  z-index: 1;
+  position: absolute;
+  padding-inline: 16px;
+  padding-block: 8px;
+  transition:
+    transform 0.2s ease-in-out,
+    font-size 0.2s ease-in-out;
+}
+
+.mantine-TextInput-root:focus-within .mantine-TextInput-label,
+.mantine-TextInput-root:has(input:not(:placeholder-shown)) .mantine-TextInput-label,
+.mantine-PasswordInput-root:focus-within .mantine-PasswordInput-label,
+.mantine-PasswordInput-root:has(input:not(:placeholder-shown)) .mantine-PasswordInput-label {
+  padding-inline: 8px;
+  background-color: var(--mantine-color-body);
+  border-radius: 4px;
+  padding-block: 0;
+  font-weight: bold;
+  transform: translateY(-50%) scale(0.8);
+  transition:
+    transform 0.2s ease-in-out,
+    font-size 0.2s ease-in-out;
+}
