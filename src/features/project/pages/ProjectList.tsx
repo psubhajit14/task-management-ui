@@ -1,6 +1,6 @@
 import { Anchor, Avatar, Checkbox, type TableData, Text } from "@mantine/core";
 import { NavLink } from "react-router";
-import { type Page, type ProjectResponse } from "../../../constants.ts";
+import { type Page, profileImg, type ProjectResponse } from "../../../constants.ts";
 import type { APIResult } from "../../../api/axios.ts";
 import { formatDistanceToNow } from "date-fns";
 import { type SortableField } from "../../../components/SortButton.tsx";
@@ -29,26 +29,34 @@ export const ProjectListPage = () => {
             setValue(e.target.checked ? project.projectId : "");
           }}
         />,
-        <Anchor component={NavLink} to={`edit/${project.projectId}`} underline={"never"}>
+        <Anchor component={NavLink} to={`${project.projectId}/tasks`} underline={"never"}>
           <Text c={"var(--mantine-color-blue-5)"}>{project.name}</Text>
         </Anchor>,
         project.details,
-        <NameFromEmployee {...project.manager} />,
+        <NameFromEmployee {...project.manager} withImage fullNameOnly />,
         <Avatar.Group>
-          <Avatar src="image.png" />
-          <Avatar src="image.png" />
-          <Avatar src="image.png" />
-          <Avatar>+5</Avatar>
+          {project.employees.map(() => (
+            <Avatar src={profileImg} />
+          ))}
         </Avatar.Group>,
-        formatDistanceToNow(project.createdAt, { addSuffix: true }),
+        formatDistanceToNow(project.createdAt, {
+          addSuffix: true,
+        }),
       ];
     }),
   });
 
   const projectSortableFields: SortableField[] = [
-    { field: "name", label: "Name", type: "string" },
-    { field: "createdBy", label: "Created By", type: "string" },
-    { field: "createdAt", label: "Created At", type: "date" },
+    {
+      field: "name",
+      label: "Name",
+      type: "string",
+    },
+    {
+      field: "createdAt",
+      label: "Created At",
+      type: "date",
+    },
   ];
 
   return (

@@ -21,10 +21,10 @@ export const ROUTES = {
   USERS: "users",
   PROJECTS: "projects",
   PROJECTS_ADD: "projects/add",
-  PROJECTS_EDIT: "projects/edit/:id",
+  PROJECTS_EDIT: "projects/edit/:projectId",
   TASKS: "projects/:projectId/tasks",
   TASKS_ADD: "projects/:projectId/tasks/add",
-  TASKS_EDIT: "projects/:projectId/tasks/edit/:id",
+  TASKS_EDIT: "projects/:projectId/tasks/edit/:taskId",
   MY_PROFILE: "my-profile",
   FORBIDDEN: "forbidden",
   NOT_FOUND: "*",
@@ -60,6 +60,15 @@ export interface ProjectResponse {
   employees: EmployeeResponse[];
 }
 
+export interface TaskResponse {
+  taskId: string;
+  taskName: string;
+  priority: string;
+  status: string;
+  type: string;
+  assignedTo: EmployeeResponse;
+}
+
 export interface Sort {
   empty: boolean;
   unsorted: boolean;
@@ -81,7 +90,10 @@ export interface RoleResponse {
 export interface RoleDetailResponse extends RoleResponse {
   permissions: string[];
 }
-export type SelectOptionResponse = { label: string; value: string }[];
+export type SelectOptionResponse = {
+  label: string;
+  value: string;
+}[];
 
 /**
  * ✅ Generic pagination wrapper

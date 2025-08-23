@@ -7,7 +7,9 @@
 }
 
 .mantine-TextInput-label,
-.mantine-PasswordInput-label {
+.mantine-PasswordInput-label,
+.mantine-Select-label,
+.mantine-MultiSelect-label {
   z-index: 1;
   position: absolute;
   padding-inline: 16px;
@@ -20,7 +22,10 @@
 .mantine-TextInput-root:focus-within .mantine-TextInput-label,
 .mantine-TextInput-root:has(input:not(:placeholder-shown)) .mantine-TextInput-label,
 .mantine-PasswordInput-root:focus-within .mantine-PasswordInput-label,
-.mantine-PasswordInput-root:has(input:not(:placeholder-shown)) .mantine-PasswordInput-label {
+.mantine-PasswordInput-root:has(input:not(:placeholder-shown)) .mantine-PasswordInput-label,
+.mantine-Select-root:focus-within .mantine-Select-label,
+.mantine-Select-root:has(input:not(:placeholder-shown)) .mantine-Select-label,
+.mantine-MultiSelect-label {
   padding-inline: 8px;
   background-color: var(--mantine-color-body);
   border-radius: 4px;

@@ -6,10 +6,26 @@ import type { NavbarItemProps } from "../NavbarItem.tsx";
 import { NavLink } from "react-router";
 
 const hrefs: NavbarItemProps[] = [
-  { Icon: <IconListDetails />, label: "Projects", href: "projects" },
-  { Icon: <IconClearAll />, label: "Board", href: "board" },
-  { Icon: <IconManualGearbox />, label: "Roles", href: "roles" },
-  { Icon: <IconUsers />, label: "Employees", href: "employees" },
+  {
+    Icon: <IconListDetails />,
+    label: "Projects",
+    href: "projects",
+  },
+  {
+    Icon: <IconClearAll />,
+    label: "Board",
+    href: "board",
+  },
+  {
+    Icon: <IconManualGearbox />,
+    label: "Roles",
+    href: "roles",
+  },
+  {
+    Icon: <IconUsers />,
+    label: "Employees",
+    href: "employees",
+  },
 ];
 export const DesktopNavbar = () => {
   return (

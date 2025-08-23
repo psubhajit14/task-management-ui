@@ -29,7 +29,13 @@ export const notify = ({ title, message, variant = "info" }: NotifyProps) => {
       icon = null;
   }
   showNotification({
-    style: { top: 20, maxWidth: 1000, minWidth: 400, marginInline: "auto", zIndex: 99 },
+    style: {
+      top: 20,
+      maxWidth: 1000,
+      minWidth: 400,
+      marginInline: "auto",
+      zIndex: 99,
+    },
     withBorder: true,
     title,
     message,

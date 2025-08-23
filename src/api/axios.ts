@@ -76,7 +76,11 @@ export const apiHandler = async <T extends APIResult>(
 
       const retryHeaders = {
         ...finalHeaders,
-        ...(refreshData?.accessToken ? { Authorization: `Bearer ${refreshData.accessToken}` } : {}),
+        ...(refreshData?.accessToken
+          ? {
+              Authorization: `Bearer ${refreshData.accessToken}`,
+            }
+          : {}),
       };
 
       res = await fetch(`${API_BASE}${url}`, {

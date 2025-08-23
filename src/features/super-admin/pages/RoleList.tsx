@@ -42,5 +42,12 @@ export const RoleListPage = () => {
       field: "name",
     },
   ];
-  return <ListPage title={"Role"} fields={fields} generateTableData={generateTableData} />;
+  return (
+    <ListPage
+      deleteEnabled={false}
+      title={"Role"}
+      fields={fields}
+      generateTableData={generateTableData}
+    />
+  );
 };

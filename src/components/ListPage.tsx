@@ -22,6 +22,9 @@ export const ListPage = <T,>({
   title,
   fields,
   generateTableData,
+  editEnabled = true,
+  deleteEnabled = true,
+  addEnabled = true,
 }: {
   title: string;
   fields: SortableField[];
@@ -30,6 +33,9 @@ export const ListPage = <T,>({
     value: string;
     setValue: (val: string) => void;
   }) => TableData;
+  editEnabled?: boolean;
+  deleteEnabled?: boolean;
+  addEnabled?: boolean;
 }) => {
   const { content, empty, numberOfElements, totalElements, totalPages, size, pageable } =
     useLoaderData() as Page<T>;
@@ -68,29 +74,39 @@ export const ListPage = <T,>({
             name={"search"}
             label={"Search..."}
             defaultValue={query}
-            onChange={(e) => handlePageChange({ query: e.target.value })}
+            onChange={(e) =>
+              handlePageChange({
+                query: e.target.value,
+              })
+            }
           />
 
           <SortButton onItemClick={handlePageChange} fields={fields} />
-          <Anchor component={NavLink} to={"add"}>
-            <Button variant="contained" c="primary">
-              <IconPlus /> Add {title}
-            </Button>
-          </Anchor>
+          {addEnabled && (
+            <Anchor component={NavLink} to={"add"}>
+              <Button variant="contained" c="primary">
+                <IconPlus /> Add {title}
+              </Button>
+            </Anchor>
+          )}
         </Group>
         <Group display={selected ? "flex" : "none"}>
-          <ActionButton
-            Icon={IconEdit}
-            label={"Edit"}
-            onClick={() => navigate(`edit/${selected}`)}
-            c={"var(--mantine-color-blue-8"}
-          />
-          <ActionButton
-            Icon={IconTrash}
-            label={"Delete"}
-            onClick={() => {}}
-            c={"var(--mantine-color-red-8)"}
-          />
+          {editEnabled && (
+            <ActionButton
+              Icon={IconEdit}
+              label={"Edit"}
+              onClick={() => navigate(`edit/${selected}`)}
+              c={"var(--mantine-color-blue-8"}
+            />
+          )}
+          {deleteEnabled && (
+            <ActionButton
+              Icon={IconTrash}
+              label={"Delete"}
+              onClick={() => {}}
+              c={"var(--mantine-color-red-8)"}
+            />
+          )}
         </Group>
       </Group>
       {/*Table content*/}

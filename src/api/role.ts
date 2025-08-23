@@ -32,7 +32,9 @@ export const roleDetailsLoader = async ({
     const roleId = params.roleId; // string | undefined
 
     if (!roleId) {
-      throw new Response("Role ID missing", { status: 400 });
+      throw new Response("Role ID missing", {
+        status: 400,
+      });
     }
 
     roleDetails = await apiHandler<RoleDetailResponse & APIResult>(
@@ -62,7 +64,9 @@ export const roleUpdateAction = async ({
   const roleId = params.roleId; // string | undefined
 
   if (!roleId) {
-    throw new Response("Role ID missing", { status: 400 });
+    throw new Response("Role ID missing", {
+      status: 400,
+    });
   }
   const body = await request.json();
   await apiHandler<RoleDetailResponse & APIResult>(`/authenticated/admin/update-role/${roleId}`, {
@@ -72,11 +76,6 @@ export const roleUpdateAction = async ({
 };
 export const roleCreateAction = async ({ request }: { request: Request }) => {
   const body = await request.json();
-  if (body.name == "" || body.name == null) {
-    return {
-      errors: { name: "Please enter name" },
-    };
-  }
   const res = await apiHandler<RoleDetailResponse & APIResult>(`/authenticated/admin/add-role`, {
     body: body,
     successTitle: `Role: ${body.name} Successfully created`,

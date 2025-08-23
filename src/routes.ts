@@ -11,14 +11,20 @@ import { ProfilePage } from "@profile";
 import { ROUTES } from "./constants.ts";
 import { loginAction, loginLoader, registerAction } from "./api/auth.ts";
 import { profileLoader } from "./api/profile.ts";
-import { projectListLoader } from "./api/project.ts";
+import {
+  projectCreateAction,
+  projectDetailsLoader,
+  projectListLoader,
+  projectUpdateAction,
+} from "./api/project.ts";
 import {
   roleCreateAction,
   roleDetailsLoader,
   roleListLoader,
   roleUpdateAction,
 } from "./api/role.ts";
-import { employeeListLoader } from "./api/employee.ts";
+import { employeeListLoader, updateRoleAction } from "./api/employee.ts";
+import { taskCreateAction, taskListLoader } from "./api/task.ts";
 
 export const routes = createBrowserRouter([
   {
@@ -29,25 +35,28 @@ export const routes = createBrowserRouter([
         path: ROUTES.AUTH,
         Component: AuthLayout,
         children: [
-          { path: ROUTES.LOGIN, Component: Login, action: loginAction, loader: loginLoader },
-          { path: ROUTES.REGISTER, Component: Register, action: registerAction },
+          {
+            path: ROUTES.LOGIN,
+            Component: Login,
+            action: loginAction,
+            loader: loginLoader,
+          },
+          {
+            path: ROUTES.REGISTER,
+            Component: Register,
+            action: registerAction,
+          },
         ],
       },
-      // {
-      //   path: ROUTES.ADMIN,
-      //   Component: AdminLayout,
-      //   children: [
-      //     // { path: ROUTES.ROLES, Component: RoleListPage, loader: roleListLoader },
-      //     // { path: ROUTES.ROLES_ADD, Component: RoleDetailsPage },
-      //     // { path: ROUTES.ROLES_EDIT, Component: RoleDetailsPage },
-      //     // { path: ROUTES.EMPLOYEES, Component: EmployeeListPage },
-      //   ],
-      // },
       {
         path: ROUTES.USERS,
         Component: UserLayout,
         children: [
-          { path: ROUTES.ROLES, Component: RoleListPage, loader: roleListLoader },
+          {
+            path: ROUTES.ROLES,
+            Component: RoleListPage,
+            loader: roleListLoader,
+          },
           {
             path: ROUTES.ROLES_ADD,
             Component: RoleDetailsPage,
@@ -60,19 +69,56 @@ export const routes = createBrowserRouter([
             loader: roleDetailsLoader,
             action: roleUpdateAction,
           },
-          { path: ROUTES.EMPLOYEES, Component: EmployeeListPage, loader: employeeListLoader },
-          { path: ROUTES.PROJECTS, Component: ProjectListPage, loader: projectListLoader },
-          { path: ROUTES.PROJECTS_ADD, Component: ProjectDetailsPage },
-          { path: ROUTES.PROJECTS_EDIT, Component: ProjectDetailsPage },
-          { path: ROUTES.TASKS, Component: TaskListPage },
-          { path: ROUTES.TASKS_ADD, Component: TaskDetailsPage },
-          { path: ROUTES.TASKS_EDIT, Component: TaskDetailsPage },
-          { path: ROUTES.MY_PROFILE, Component: ProfilePage, loader: profileLoader },
-          { path: ROUTES.FORBIDDEN, Component: Forbidden },
+          {
+            path: ROUTES.EMPLOYEES,
+            Component: EmployeeListPage,
+            loader: employeeListLoader,
+            action: updateRoleAction,
+          },
+          {
+            path: ROUTES.PROJECTS,
+            Component: ProjectListPage,
+            loader: projectListLoader,
+          },
+          {
+            path: ROUTES.PROJECTS_ADD,
+            Component: ProjectDetailsPage,
+            loader: projectDetailsLoader,
+            action: projectCreateAction,
+          },
+          {
+            path: ROUTES.PROJECTS_EDIT,
+            Component: ProjectDetailsPage,
+            loader: projectDetailsLoader,
+            action: projectUpdateAction,
+          },
+          {
+            path: ROUTES.TASKS,
+            Component: TaskListPage,
+            loader: taskListLoader,
+            action: taskCreateAction,
+          },
+          // { path: ROUTES.TASKS_ADD, Component: TaskDetailsPage },
+          {
+            path: ROUTES.TASKS_EDIT,
+            Component: TaskDetailsPage,
+          },
+          {
+            path: ROUTES.MY_PROFILE,
+            Component: ProfilePage,
+            loader: profileLoader,
+          },
+          {
+            path: ROUTES.FORBIDDEN,
+            Component: Forbidden,
+          },
         ],
       },
 
-      { path: ROUTES.NOT_FOUND, Component: NotFound },
+      {
+        path: ROUTES.NOT_FOUND,
+        Component: NotFound,
+      },
     ],
   },
 ]);

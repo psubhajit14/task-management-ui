@@ -10,10 +10,26 @@ import { ThemeSwitch } from "../ThemeSwitch.tsx";
 import { NavbarItem, type NavbarItemProps } from "../NavbarItem.tsx";
 
 const hrefs: NavbarItemProps[] = [
-  { Icon: <IconListDetails />, label: "Projects", href: "projects" },
-  { Icon: <IconClearAll />, label: "Board", href: "board" },
-  { Icon: <IconManualGearbox />, label: "Roles", href: "roles" },
-  { Icon: <IconUsers />, label: "Employees", href: "employees" },
+  {
+    Icon: <IconListDetails />,
+    label: "Projects",
+    href: "projects",
+  },
+  {
+    Icon: <IconClearAll />,
+    label: "Board",
+    href: "board",
+  },
+  {
+    Icon: <IconManualGearbox />,
+    label: "Roles",
+    href: "roles",
+  },
+  {
+    Icon: <IconUsers />,
+    label: "Employees",
+    href: "employees",
+  },
 ];
 const logoutLink: NavbarItemProps = {
   Icon: <IconLogout />,

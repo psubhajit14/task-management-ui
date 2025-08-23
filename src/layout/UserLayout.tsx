@@ -14,12 +14,21 @@ export const UserLayout = () => {
   return (
     <AppShell
       header={{ height: 90 }}
-      navbar={{ width: 300, breakpoint: "sm", collapsed: { desktop: true, mobile: !opened } }}
+      navbar={{
+        width: 300,
+        breakpoint: "sm",
+        collapsed: {
+          desktop: true,
+          mobile: !opened,
+        },
+      }}
       padding="md"
     >
       <AppShell.Header
         zIndex={1}
-        {...(isDark == "light" && { bg: "linear-gradient(to left, #ffffff, #f0f0ff)" })}
+        {...(isDark == "light" && {
+          bg: "linear-gradient(to left, #ffffff, #f0f0ff)",
+        })}
       >
         <Group h="100%" px="md">
           {/*Mobile header*/}

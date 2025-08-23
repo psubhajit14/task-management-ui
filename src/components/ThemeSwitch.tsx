@@ -3,7 +3,9 @@ import { IconMoon, IconSun } from "@tabler/icons-react";
 
 export const ThemeSwitch = () => {
   const { setColorScheme } = useMantineColorScheme();
-  const computedColorScheme = useComputedColorScheme("light", { getInitialValueInEffect: true });
+  const computedColorScheme = useComputedColorScheme("light", {
+    getInitialValueInEffect: true,
+  });
   const isDark = computedColorScheme !== "light";
   return (
     <ActionIcon

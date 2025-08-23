@@ -1,5 +1,5 @@
-import { apiHandler } from "./axios.ts";
-import type { EmployeeListProps } from "../features/super-admin/pages/EmployeeList.tsx";
+import { apiHandler, type APIResult } from "./axios.ts";
+import type { EmployeeResponse, Page, SelectOptionResponse } from "../constants.ts";
 
 export const employeeListLoader = async ({ request }: { request: Request }) => {
   const url = new URL(request.url);
@@ -8,7 +8,7 @@ export const employeeListLoader = async ({ request }: { request: Request }) => {
   const sortBy = url.searchParams.get("sortBy") ?? "createdAt";
   const direction = url.searchParams.get("direction") ?? "asc";
   const query = url.searchParams.get("query") ?? "";
-  return await apiHandler<EmployeeListProps>(
+  const employees = await apiHandler<Page<EmployeeResponse> & APIResult>(
     "/authenticated/admin/get-employees/page?query=" + query,
     {
       body: {
@@ -19,4 +19,19 @@ export const employeeListLoader = async ({ request }: { request: Request }) => {
       },
     },
   );
+  const roles = await apiHandler<SelectOptionResponse & APIResult>(
+    `/authenticated/admin/get-roles`,
+    {
+      method: "GET",
+    },
+  );
+  return { ...employees, roles: roles };
+};
+
+export const updateRoleAction = async ({ request }: { request: Request }) => {
+  const { employeeId, roleId } = await request.json();
+  await apiHandler(`/authenticated/admin/update-role/${employeeId}/${roleId}`, {
+    method: request.method,
+    successTitle: "Role Updated Successfully",
+  });
 };

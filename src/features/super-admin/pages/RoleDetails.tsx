@@ -1,13 +1,15 @@
 import type { RoleDetailResponse, SelectOptionResponse } from "../../../constants.ts";
 import type { APIResult } from "../../../api/axios.ts";
-import { useActionData, useLoaderData, useLocation, useSubmit } from "react-router";
+import { useLoaderData, useLocation, useSubmit } from "react-router";
 import { Anchor, Breadcrumbs, Checkbox, Fieldset, Group, Stack, Table, Text } from "@mantine/core";
 import { IconChevronRight, IconCircleCheck, IconCircleX, IconEdit } from "@tabler/icons-react";
 import { useCallback, useState } from "react";
 import { ActionButton } from "../../../components/ActionButton.tsx";
 import { TextInput } from "../../../components/TextInput.tsx";
 
-export type RoleDetailsProps = RoleDetailResponse & { options: SelectOptionResponse } & APIResult;
+export type RoleDetailsProps = RoleDetailResponse & {
+  options: SelectOptionResponse;
+} & APIResult;
 /**
  * Splits a string by "_" into two parts:
  *  - everything before the last "_"
@@ -36,19 +38,23 @@ function buildTableForMantine(items: SelectOptionResponse) {
 
   // Build rows array for Mantine Table
   const rows = Object.entries(tableMap).map(([rowKey, cols]) => {
-    const row: Record<string, string | null> = { Action: rowKey }; // first cell = row key
+    const row: Record<string, string | null> = {
+      Action: rowKey,
+    }; // first cell = row key
     columns.forEach((col) => {
       row[col] = cols[col] || null; // fill missing with null
     });
     return row;
   });
 
-  return { columns: ["Action", ...columns], rows };
+  return {
+    columns: ["Action", ...columns],
+    rows,
+  };
 }
 
 export const RoleDetailsPage = () => {
   const { name = "", permissions = [], options } = useLoaderData() as RoleDetailsProps;
-  const { errors } = useActionData() ?? {};
   const location = useLocation();
   const isAdd = location.pathname.includes("/add");
   const [editable, setEditable] = useState(isAdd);
@@ -61,12 +67,19 @@ export const RoleDetailsPage = () => {
         name: nameLocal,
         permissions: updatedPermissions,
       },
-      { encType: "application/json", method: isAdd ? "POST" : "PUT" },
+      {
+        encType: "application/json",
+        method: isAdd ? "POST" : "PUT",
+      },
     );
   }, [isAdd, nameLocal, submit, updatedPermissions]);
   const items = [
     { title: "Roles", href: isAdd ? "." : ".." },
-    { title: isAdd ? "Create Role" : name, href: "", active: true },
+    {
+      title: isAdd ? "Create Role" : name,
+      href: "",
+      active: true,
+    },
   ].map((item, index) => (
     <Anchor
       href={item.href}
@@ -86,19 +99,10 @@ export const RoleDetailsPage = () => {
       <Breadcrumbs separator={<IconChevronRight size={16} />} style={{ alignItems: "center" }}>
         {items}
       </Breadcrumbs>
-
-      {/*<Form*/}
-      {/*  onSubmit={() => {*/}
-      {/*    saveChanges();*/}
-      {/*    if (!isAdd) setEditable(false);*/}
-      {/*  }}*/}
-      {/*>*/}
       <Group align={"center"} py={4}>
         {editable ? (
           <TextInput
             my={16}
-            required
-            error={!nameLocal && errors && errors.name}
             label={"Role Name"}
             onChange={(e) => {
               setNameLocal(e.target.value);
@@ -112,7 +116,10 @@ export const RoleDetailsPage = () => {
           <ActionButton
             Icon={IconEdit}
             label={"Edit Role"}
-            onClick={() => setEditable(true)}
+            onClick={() => {
+              setNameLocal(name);
+              setEditable(true);
+            }}
             c={"var(--mantine-color-blue-6)"}
           />
         ) : (
@@ -120,10 +127,10 @@ export const RoleDetailsPage = () => {
             <ActionButton
               Icon={IconCircleCheck}
               label={"Save Changes"}
-              // type={"submit"}
+              disabled={nameLocal == ""}
               onClick={() => {
                 saveChanges();
-                if (!isAdd) setEditable(false);
+                setEditable(false);
               }}
               c={"var(--mantine-color-green-6)"}
             />
@@ -140,7 +147,6 @@ export const RoleDetailsPage = () => {
           </>
         )}
       </Group>
-      {/*</Form>*/}
 
       <Fieldset
         legend={

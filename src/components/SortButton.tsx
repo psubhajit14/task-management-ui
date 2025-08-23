@@ -48,7 +48,10 @@ export const SortButton = ({
       <Menu.Item
         key={label}
         onClick={() => {
-          onItemClick({ sortBy: field.field, direction: direction });
+          onItemClick({
+            sortBy: field.field,
+            direction: direction,
+          });
         }}
       >
         {label}
