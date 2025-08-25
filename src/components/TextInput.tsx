@@ -4,10 +4,12 @@ export const TextInput = ({
   required = false,
   label = "",
   type = "text",
+  ref,
   ...props
-}: TextInputProps) => {
+}: TextInputProps & { ref?: React.Ref<HTMLInputElement> | undefined }) => {
   return (
     <TInput
+      ref={ref}
       {...props}
       ta={"start"}
       pos={"relative"}

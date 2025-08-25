@@ -1,9 +1,8 @@
 import {
-  profileImg,
   type ProjectResponse,
   type SelectOptionResponse,
   type TaskResponse,
-} from "../../../constants.ts";
+} from "../../../types.ts";
 import type { APIResult } from "../../../api/axios.ts";
 import {
   Anchor,
@@ -16,13 +15,14 @@ import {
   Group,
   Stack,
 } from "@mantine/core";
-import { useLoaderData, useParams } from "react-router";
+import { useLoaderData, useParams, useSearchParams } from "react-router";
 import { IconCancel, IconChevronRight } from "@tabler/icons-react";
 import { TextInput } from "../../../components/TextInput.tsx";
-import { SelectInput } from "../../../components/SelectInput.tsx";
 import { ActionButton } from "../../../components/ActionButton.tsx";
-import { KanbanBoard } from "../component/DragNDrop.tsx";
+import { KanbanBoard } from "../component/board/DragNDrop.tsx";
 import { CreateTaskModal } from "../component/CreateTaskModal.tsx";
+import { useDebouncedCallback } from "@mantine/hooks";
+import { profileImg } from "../../../constants.ts";
 
 export type TaskListProps = {
   projectDetails: ProjectResponse;
@@ -35,7 +35,7 @@ export const TaskListPage = () => {
   const params = useParams() as {
     projectId: string;
   };
-  const { projectDetails, types, priorities } = useLoaderData() as TaskListProps;
+  const { projectDetails } = useLoaderData() as TaskListProps;
   const items = [
     { title: "Projects", href: ".." },
     {
@@ -54,6 +54,13 @@ export const TaskListPage = () => {
       {item.title}
     </Anchor>
   ));
+  const [searchParams, setSearchParams] = useSearchParams();
+  const query = (searchParams.get("query") as string) || "";
+  const handleQueryChange = useDebouncedCallback((query: string) => {
+    const newParams = new URLSearchParams();
+    newParams.set("query", query);
+    setSearchParams(newParams);
+  }, 700);
   return (
     <Stack gap={8} my={16}>
       <Breadcrumbs separator={<IconChevronRight size={16} />} style={{ alignItems: "center" }}>
@@ -63,7 +70,12 @@ export const TaskListPage = () => {
       <h2>Tasks</h2>
       <Grid justify={"space-between"} dir={"row"} align={"center"} w={"100%"} grow>
         <GridCol span={{ base: 12, md: 2 }}>
-          <TextInput label={"Search..."} w={"100%"} />
+          <TextInput
+            label={"Search..."}
+            w={"100%"}
+            defaultValue={query}
+            onChange={(e) => handleQueryChange(e.target.value)}
+          />
         </GridCol>
         <GridCol span={{ base: 12, md: 7 }}>
           <Group>
@@ -76,39 +88,31 @@ export const TaskListPage = () => {
             <Button variant={"subtle"} onClick={() => {}} c={"var(--mantine-color-bright)"}>
               Only My Tasks
             </Button>
-            <SelectInput
-              variant={"default"}
-              label="Type"
-              w={100}
-              defaultValue={""}
-              data={[{ label: "All", value: "" }, ...types]}
-            />
-            <SelectInput
-              variant={"default"}
-              label="Priority"
-              w={100}
-              defaultValue={""}
-              data={[{ label: "All", value: "" }, ...priorities]}
-            />
           </Group>
         </GridCol>
 
-        <GridCol span={{ base: 12, md: 4, lg: 3 }} w={"100%"}>
-          <Grid dir={"row"} justify={"space-between"}>
-            <GridCol span={6}>
-              <ActionButton
-                fullWidth
-                Icon={IconCancel}
-                label={"Clear Filters"}
-                onClick={() => {}}
-                c={"var(--mantine-color-bright)"}
-              />
-            </GridCol>
-            <GridCol span={6}>
-              <CreateTaskModal />
-            </GridCol>
-          </Grid>
-        </GridCol>
+        {query ? (
+          <GridCol span={{ base: 12, md: 4, lg: 3 }} w={"100%"}>
+            <Grid dir={"row"} justify={"space-between"}>
+              <GridCol span={6}>
+                <ActionButton
+                  fullWidth
+                  Icon={IconCancel}
+                  label={"Clear Filters"}
+                  onClick={() => {}}
+                  c={"var(--mantine-color-bright)"}
+                />
+              </GridCol>
+              <GridCol span={6}>
+                <CreateTaskModal />
+              </GridCol>
+            </Grid>
+          </GridCol>
+        ) : (
+          <GridCol span={{ base: 12, md: 1 }} w={"100%"}>
+            <CreateTaskModal />
+          </GridCol>
+        )}
       </Grid>
       <KanbanBoard />
     </Stack>

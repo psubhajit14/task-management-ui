@@ -1,4 +1,4 @@
-import type { Page, RoleResponse } from "../../../constants.ts";
+import type { Page, RoleResponse } from "../../../types.ts";
 import type { APIResult } from "../../../api/axios.ts";
 import { Anchor, Checkbox, Group, type TableData, Text } from "@mantine/core";
 import { ListPage } from "../../../components/ListPage.tsx";

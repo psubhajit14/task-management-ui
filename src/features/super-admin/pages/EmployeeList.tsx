@@ -1,4 +1,4 @@
-import type { EmployeeResponse, Page, SelectOptionResponse } from "../../../constants.ts";
+import type { EmployeeResponse, Page, SelectOptionResponse } from "../../../types.ts";
 import type { APIResult } from "../../../api/axios.ts";
 import { Anchor, type TableData, Text } from "@mantine/core";
 import { ListPage } from "../../../components/ListPage.tsx";

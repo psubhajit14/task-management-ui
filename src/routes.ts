@@ -24,7 +24,14 @@ import {
   roleUpdateAction,
 } from "./api/role.ts";
 import { employeeListLoader, updateRoleAction } from "./api/employee.ts";
-import { taskCreateAction, taskListLoader } from "./api/task.ts";
+import {
+  taskCreateOrUpdateAction,
+  taskDetailsLoader,
+  taskListLoader,
+  taskUpdateAction,
+} from "./api/task.ts";
+import { CommentList } from "./features/task/component/details/component/CommentList.tsx";
+import { commentListLoader } from "./api/comment.ts";
 
 export const routes = createBrowserRouter([
   {
@@ -96,12 +103,21 @@ export const routes = createBrowserRouter([
             path: ROUTES.TASKS,
             Component: TaskListPage,
             loader: taskListLoader,
-            action: taskCreateAction,
+            action: taskCreateOrUpdateAction,
           },
           // { path: ROUTES.TASKS_ADD, Component: TaskDetailsPage },
           {
             path: ROUTES.TASKS_EDIT,
             Component: TaskDetailsPage,
+            loader: taskDetailsLoader,
+            action: taskUpdateAction,
+            children: [
+              {
+                path: "",
+                Component: CommentList,
+                loader: commentListLoader,
+              },
+            ],
           },
           {
             path: ROUTES.MY_PROFILE,

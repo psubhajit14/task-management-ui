@@ -1,4 +1,4 @@
-import type { RoleDetailResponse, SelectOptionResponse } from "../../../constants.ts";
+import type { RoleDetailResponse, SelectOptionResponse } from "../../../types.ts";
 import type { APIResult } from "../../../api/axios.ts";
 import { useLoaderData, useLocation, useSubmit } from "react-router";
 import { Anchor, Breadcrumbs, Checkbox, Fieldset, Group, Stack, Table, Text } from "@mantine/core";

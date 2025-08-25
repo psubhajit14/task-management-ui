@@ -1,7 +1,7 @@
 import { apiHandler, type APIResult } from "./axios.ts";
 import type { RoleListProps } from "../features/super-admin/pages/RoleList.tsx";
 import { type Params, redirect } from "react-router";
-import type { RoleDetailResponse, SelectOptionResponse } from "../constants.ts";
+import type { RoleDetailResponse, SelectOptionResponse } from "../types.ts";
 
 export const roleListLoader = async ({ request }: { request: Request }) => {
   const url = new URL(request.url);

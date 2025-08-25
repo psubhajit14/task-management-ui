@@ -1,5 +1,5 @@
 import { apiHandler, type APIResult } from "./axios.ts";
-import type { EmployeeResponse, Page, SelectOptionResponse } from "../constants.ts";
+import type { EmployeeResponse, Page, SelectOptionResponse } from "../types.ts";
 
 export const employeeListLoader = async ({ request }: { request: Request }) => {
   const url = new URL(request.url);

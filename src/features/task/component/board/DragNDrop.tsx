@@ -3,16 +3,20 @@ import {
   type DragEndEvent,
   DragOverlay,
   type DragStartEvent,
+  PointerSensor,
   useDraggable,
   useDroppable,
+  useSensor,
+  useSensors,
 } from "@dnd-kit/core";
-import { Card, Group, ScrollArea, Stack, Text, useComputedColorScheme } from "@mantine/core";
+import { Anchor, Card, Group, ScrollArea, Stack, Text, useComputedColorScheme, } from "@mantine/core";
 import * as React from "react";
-import { useEffect, useState } from "react";
-import { useLoaderData } from "react-router";
-import type { TaskListProps } from "../pages/TaskList.tsx";
-import type { SelectOptionResponse, TaskResponse } from "../../../constants.ts";
-import { IconBook, IconBookmark, IconBrandPagekit, IconBug } from "@tabler/icons-react";
+import { useCallback, useEffect, useState } from "react";
+import { NavLink, useLoaderData, useSubmit } from "react-router";
+import type { TaskListProps } from "../../pages/TaskList.tsx";
+import type { SelectOptionResponse, TaskResponse } from "../../../../types.ts";
+import { NameFromEmployee } from "../../../../components/NameFromEmployee.tsx";
+import { getIconByPriority, getIconByType, } from "../../../../components/IconsOnTaskTypeStatusPriority.tsx"; // Board data structure: columns mapped to their list of tasks
 
 // Board data structure: columns mapped to their list of tasks
 type BoardData = {
@@ -60,29 +64,17 @@ const Column = ({
     </Card>
   );
 };
-const getIconByType = (type: string) => {
-  switch (type) {
-    case "STORY":
-      return <IconBookmark color={"var(--mantine-color-green-5)"} />;
-    case "TASK":
-      return <IconBook color={"var(--mantine-color-blue-5)"} />;
-    case "BUG":
-      return <IconBug color={"var(--mantine-color-red-5)"} />;
-    case "ENHANCEMENT":
-      return <IconBrandPagekit color={"var(--mantine-color-yellow-5)"} />;
-  }
-};
 
-// -------------------- Task Component -------------------- //
 // Draggable card representing a task
-const TaskCard = ({ taskId, taskName, type, status, priority, assignedTo }: TaskResponse) => {
+const TaskCard = ({ taskId, taskName, type, priority, assignedTo }: TaskResponse) => {
   const { attributes, listeners, setNodeRef, transform } = useDraggable({ id: taskId });
   const isDark = useComputedColorScheme();
   // Apply transform (dragging movement) when this card is being dragged
   const style = {
     transform: transform ? `translate(${transform.x}px, ${transform.y}px)` : undefined,
   };
-  const icon = getIconByType(type);
+  const typeIcon = getIconByType(type);
+  const priorityIcon = getIconByPriority(priority);
   return (
     <Card
       bg={isDark == "dark" ? "var(--mantine-color-dark-8)" : undefined}
@@ -95,10 +87,23 @@ const TaskCard = ({ taskId, taskName, type, status, priority, assignedTo }: Task
       {...listeners} // mouse/keyboard event listeners from dnd-kit
     >
       <Stack>
-        <Text size={"md"} fw={"bold"}>
-          {taskName}
-        </Text>
-        {icon}
+        <Anchor component={NavLink} to={`edit/${taskId}`} underline={"never"} style={{ zIndex: 4 }}>
+          <Text size={"md"} fw={"bold"} c={"var(--mantine-color-blue-6)"}>
+            {taskName}{" "}
+          </Text>
+        </Anchor>
+
+        <Group>
+          <Group gap={2}>
+            {typeIcon}
+            {type}
+          </Group>
+          <Group gap={2}>
+            {priorityIcon}
+            {priority}
+          </Group>
+        </Group>
+        {assignedTo != null ? <NameFromEmployee {...assignedTo} fullNameOnly /> : "Not Assigned"}
       </Stack>
     </Card>
   );
@@ -122,11 +127,24 @@ export const KanbanBoard = () => {
   // State: track currently dragged task for the DragOverlay
   const [activeTask, setActiveTask] = useState<TaskResponse | null>(null);
 
+  const submit = useSubmit();
+  const dragEnd = useCallback(
+    (task: TaskResponse, status: string) => {
+      submit(
+        {
+          taskId: task.taskId,
+          key: "status",
+          value: status,
+        },
+        { method: "POST" },
+      );
+    },
+    [submit],
+  );
   // Called when dragging starts
   const handleDragStart = (event: DragStartEvent) => {
     const { active } = event;
     const taskId = active.id as string;
-
     // Find the dragged task in boardData
     const task = Object.values(boardData)
       .flat()
@@ -158,6 +176,7 @@ export const KanbanBoard = () => {
       (t) => t.taskId === taskId,
     )!;
 
+    // ***** Optimistically
     // Update board: remove task from source and prepend to target
     setBoardData((prev) => ({
       ...prev,
@@ -167,12 +186,30 @@ export const KanbanBoard = () => {
 
     // Clear overlay
     setActiveTask(null);
+    // Hit Backend and update
+    try {
+      dragEnd(task, over.id as string);
+    } catch {
+      // revert changes if error occurs
+      setBoardData((prev) => ({
+        ...prev,
+        [targetColumn]: prev[targetColumn as keyof typeof prev].filter((t) => t.taskId !== taskId),
+        [sourceColumn]: [task, ...prev[sourceColumn as keyof typeof prev]],
+      }));
+    }
     // Notify user
     // notify({ title: "Success", message: `Task ${active.id} dropped into column ${over.id}` });
   };
-
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        delay: 200, // ms
+        tolerance: 15, // allow slight movement before drag starts
+      },
+    }),
+  );
   return (
-    <DndContext onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
+    <DndContext onDragStart={handleDragStart} onDragEnd={handleDragEnd} sensors={sensors}>
       {/* Columns laid out side by side, full height */}
       <Group grow my={16} align="stretch">
         {Object.entries(boardData).map(([status, tasks]) => (

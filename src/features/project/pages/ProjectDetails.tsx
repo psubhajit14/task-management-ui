@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Form, useActionData, useLoaderData, useNavigate } from "react-router";
 import { Anchor, Breadcrumbs, Divider, Fieldset, Group, Stack, Text } from "@mantine/core";
-import type { ProjectResponse, SelectOptionResponse } from "../../../constants.ts";
+import type { ProjectResponse, SelectOptionResponse } from "../../../types.ts";
 import type { APIResult } from "../../../api/axios.ts";
 import { IconChevronRight, IconCircleCheck, IconCircleX, IconEdit } from "@tabler/icons-react";
 import { TextInput } from "../../../components/TextInput.tsx";

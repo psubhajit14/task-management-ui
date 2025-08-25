@@ -8,7 +8,7 @@ export function AuthLayout() {
       <Grid.Col span={{ base: 12, md: 6, lg: 4 }} h={"100vh"}>
         <Stack flex={2} p={64} justify={"center"} ta={"center"}>
           <Center>
-            <Logo />
+            <Logo size={"md"} />
           </Center>
           <Outlet />
         </Stack>

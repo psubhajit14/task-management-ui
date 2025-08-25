@@ -1,11 +1,12 @@
 import { Anchor, Avatar, Checkbox, type TableData, Text } from "@mantine/core";
 import { NavLink } from "react-router";
-import { type Page, profileImg, type ProjectResponse } from "../../../constants.ts";
+import { type Page, type ProjectResponse } from "../../../types.ts";
 import type { APIResult } from "../../../api/axios.ts";
 import { formatDistanceToNow } from "date-fns";
 import { type SortableField } from "../../../components/SortButton.tsx";
 import { ListPage } from "../../../components/ListPage.tsx";
 import { NameFromEmployee } from "../../../components/NameFromEmployee.tsx";
+import { profileImg } from "../../../constants.ts";
 
 export type ProjectListProps = Page<ProjectResponse> & APIResult;
 

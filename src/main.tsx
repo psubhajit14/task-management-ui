@@ -1,6 +1,8 @@
 import { createRoot } from "react-dom/client";
 // core styles are required for all packages
 import "@mantine/core/styles.css";
+import "@mantine/tiptap/styles.css";
+import "@mantine/dates/styles.css";
 import { createTheme, MantineProvider } from "@mantine/core";
 import "./main.css";
 import { Notifications } from "@mantine/notifications";

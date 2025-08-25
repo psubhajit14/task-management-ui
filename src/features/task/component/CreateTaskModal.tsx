@@ -34,6 +34,7 @@ export const CreateTaskModal = () => {
         centered
       >
         <Form action={""} method="POST">
+          <input type="hidden" name="intent" value="create" />
           <Stack gap={16} mt={16}>
             <TextInput
               required
@@ -78,20 +79,6 @@ export const CreateTaskModal = () => {
                   value: emp.employeeId,
                 })),
               ]}
-            />
-            <TextInput
-              required
-              label={"Start Date"}
-              type={"date"}
-              name="startDate"
-              error={errors && errors.startDate}
-            />
-            <TextInput
-              required
-              label={"End Date"}
-              type={"date"}
-              name="endDate"
-              error={errors && errors.endDate}
             />
             <Button fullWidth type={"submit"}>
               Create
