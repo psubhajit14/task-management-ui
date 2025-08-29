@@ -31,7 +31,7 @@ import {
   taskUpdateAction,
 } from "./api/task.ts";
 import { CommentList } from "./features/task/component/details/component/CommentList.tsx";
-import { commentListLoader } from "./api/comment.ts";
+import { commentCreateOrUpdateOrDeleteAction } from "./api/comment.ts";
 
 export const routes = createBrowserRouter([
   {
@@ -113,9 +113,10 @@ export const routes = createBrowserRouter([
             action: taskUpdateAction,
             children: [
               {
-                path: "",
+                index: true,
                 Component: CommentList,
-                loader: commentListLoader,
+                // loader: commentListLoader,
+                action: commentCreateOrUpdateOrDeleteAction,
               },
             ],
           },

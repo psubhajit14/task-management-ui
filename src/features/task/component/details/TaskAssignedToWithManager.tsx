@@ -21,7 +21,7 @@ export const TaskAssignedToWithManager = () => {
   );
   return (
     <Stack>
-      <Text size={"md"} fw={"bold"}>
+      <Text size={"lg"} fw={"bold"}>
         Assigned to
       </Text>
       <SelectInput
@@ -34,7 +34,7 @@ export const TaskAssignedToWithManager = () => {
         ]}
         onChange={(value) => handleChangeAssignedTo(value as string)}
       />
-      <Text size={"md"} fw={"bold"}>
+      <Text size={"lg"} fw={"bold"}>
         Managed by
       </Text>
       <Text size={"md"} fw={"bold"}>

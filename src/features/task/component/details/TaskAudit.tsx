@@ -8,7 +8,7 @@ export const TaskAudit = () => {
   const { task } = useLoaderData() as TaskDetailsProps;
   return (
     <Stack>
-      <Text fw={"bold"} size={"md"}>
+      <Text fw={"bold"} size={"lg"}>
         Created By
       </Text>
       <Group>

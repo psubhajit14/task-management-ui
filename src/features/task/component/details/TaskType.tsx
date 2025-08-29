@@ -20,7 +20,7 @@ export const TaskType = () => {
   );
   return (
     <Stack>
-      <Text size={"md"} fw={"bold"}>
+      <Text size={"lg"} fw={"bold"}>
         Task Type
       </Text>
       <SelectInput

@@ -20,7 +20,7 @@ export const TaskStartNEndDate = () => {
   );
   return (
     <Stack>
-      <Text size={"md"} fw={"bold"}>
+      <Text size={"lg"} fw={"bold"}>
         Start Date and End Date
       </Text>
       <DatePickerInput

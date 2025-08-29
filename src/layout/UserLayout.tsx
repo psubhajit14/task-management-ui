@@ -25,7 +25,7 @@ export const UserLayout = () => {
       padding="md"
     >
       <AppShell.Header
-        zIndex={1}
+        zIndex={99}
         {...(isDark == "light" && {
           bg: "linear-gradient(to left, #ffffff, #f0f0ff)",
         })}

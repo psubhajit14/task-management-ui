@@ -39,7 +39,7 @@ export const TaskDescription = () => {
   return (
     <Stack gap={16} mt={32}>
       <Stack>
-        <Text size={"md"} fw={"bold"}>
+        <Text size={"lg"} fw={"bold"}>
           Task Description
         </Text>
         <Text c={"dimmed"} size={"xs"}>
@@ -85,7 +85,7 @@ export const TaskDescription = () => {
           </RichTextEditor.ControlsGroup>
 
           <RichTextEditor.ControlsGroup>
-            <RichTextEditor.Undo />
+            <RichTextEditor.Undo mr={8} />
             <RichTextEditor.Redo />
           </RichTextEditor.ControlsGroup>
         </RichTextEditor.Toolbar>

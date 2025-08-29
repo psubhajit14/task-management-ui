@@ -20,7 +20,7 @@ export const TaskStatus = () => {
   );
   return (
     <Stack>
-      <Text size={"md"} fw={"bold"}>
+      <Text size={"lg"} fw={"bold"}>
         Task Status
       </Text>
       <SelectInput

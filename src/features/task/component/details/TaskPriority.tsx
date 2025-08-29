@@ -20,7 +20,7 @@ export const TaskPriority = () => {
   );
   return (
     <Stack>
-      <Text size={"md"} fw={"bold"}>
+      <Text size={"lg"} fw={"bold"}>
         Task Priority
       </Text>
       <SelectInput

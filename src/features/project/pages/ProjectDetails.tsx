@@ -23,7 +23,6 @@ export const ProjectDetailsPage = () => {
     createdBy,
     updatedAt,
     employees = [],
-    employeeOptions,
   } = useLoaderData() as ProjectDetailsProps;
   const navigate = useNavigate();
   const { errors, success, projectId } = (useActionData() as ProjectDetailsProps) ?? {};
@@ -119,7 +118,12 @@ export const ProjectDetailsPage = () => {
               required
               label={"Manager"}
               error={errors && errors.manager}
-              data={employeeOptions}
+              data={employees.map((employee) => ({
+                label: employee.email,
+                value: employee.employeeId,
+                ...employee,
+              }))}
+              variant={"employee"}
               defaultValue={manager && manager.employeeId}
               name="managerId"
             />
@@ -130,7 +134,11 @@ export const ProjectDetailsPage = () => {
               }
               name="employeeIds"
               error={errors && errors.employeeIds}
-              data={employeeOptions}
+              data={employees.map((employee) => ({
+                label: employee.email,
+                value: employee.employeeId,
+                ...employee,
+              }))}
               defaultValue={employees.map((employee) => employee.employeeId)}
             />
           </Stack>

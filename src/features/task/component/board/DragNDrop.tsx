@@ -9,14 +9,25 @@ import {
   useSensor,
   useSensors,
 } from "@dnd-kit/core";
-import { Anchor, Card, Group, ScrollArea, Stack, Text, useComputedColorScheme, } from "@mantine/core";
+import {
+  Anchor,
+  Card,
+  Group,
+  ScrollArea,
+  Stack,
+  Text,
+  useComputedColorScheme,
+} from "@mantine/core";
 import * as React from "react";
 import { useCallback, useEffect, useState } from "react";
 import { NavLink, useLoaderData, useSubmit } from "react-router";
 import type { TaskListProps } from "../../pages/TaskList.tsx";
 import type { SelectOptionResponse, TaskResponse } from "../../../../types.ts";
 import { NameFromEmployee } from "../../../../components/NameFromEmployee.tsx";
-import { getIconByPriority, getIconByType, } from "../../../../components/IconsOnTaskTypeStatusPriority.tsx"; // Board data structure: columns mapped to their list of tasks
+import {
+  getIconByPriority,
+  getIconByType,
+} from "../../../../components/IconsOnTaskTypeStatusPriority.tsx"; // Board data structure: columns mapped to their list of tasks
 
 // Board data structure: columns mapped to their list of tasks
 type BoardData = {
@@ -129,7 +140,7 @@ export const KanbanBoard = () => {
 
   const submit = useSubmit();
   const dragEnd = useCallback(
-    (task: TaskResponse, status: string) => {
+    (task: TaskResponse, status: string) =>
       submit(
         {
           taskId: task.taskId,
@@ -137,8 +148,7 @@ export const KanbanBoard = () => {
           value: status,
         },
         { method: "POST" },
-      );
-    },
+      ),
     [submit],
   );
   // Called when dragging starts
@@ -156,7 +166,7 @@ export const KanbanBoard = () => {
   };
 
   // Called when dragging ends (drop)
-  const handleDragEnd = (event: DragEndEvent) => {
+  const handleDragEnd = async (event: DragEndEvent) => {
     const { active, over } = event;
     if (!over) return; // dropped outside a valid column
 
@@ -188,7 +198,7 @@ export const KanbanBoard = () => {
     setActiveTask(null);
     // Hit Backend and update
     try {
-      dragEnd(task, over.id as string);
+      await dragEnd(task, over.id as string);
     } catch {
       // revert changes if error occurs
       setBoardData((prev) => ({
@@ -210,7 +220,7 @@ export const KanbanBoard = () => {
   );
   return (
     <DndContext onDragStart={handleDragStart} onDragEnd={handleDragEnd} sensors={sensors}>
-      {/* Columns laid out side by side, full height */}
+      {/* Columns laid outside by side, full height */}
       <Group grow my={16} align="stretch">
         {Object.entries(boardData).map(([status, tasks]) => (
           <Column key={status} id={status} length={tasks.length}>

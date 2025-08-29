@@ -92,7 +92,14 @@ export const apiHandler = async <T extends APIResult>(
       return {};
     }
   }
-  const result: T = await res.json();
+
+  let result: T;
+  try {
+    result = await res.json();
+  } catch {
+    result = {} as T;
+  }
+
   // Server error
   if (!res.ok) {
     notify({
